@@ -1667,6 +1667,12 @@ class TemplateAttribute(Struct):
         else:
             return NotImplemented
 
+    def __str__(self):
+        return str({
+            'names': str(self.names),
+            'attributes': str(self.attributes)
+        })
+
 
 class CommonTemplateAttribute(TemplateAttribute):
 

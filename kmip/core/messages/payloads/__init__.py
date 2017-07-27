@@ -13,4 +13,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-__all__ = ['create', 'destroy', 'get', 'locate', 'register']
+from kmip.core.messages.payloads.rekey import (
+    RekeyRequestPayload, RekeyResponsePayload
+)
+
+__all__ = [
+    'RekeyRequestPayload',
+    'RekeyResponsePayload'
+]
