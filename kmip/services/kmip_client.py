@@ -47,23 +47,7 @@ from kmip.core.messages.contents import Operation
 from kmip.core.messages.contents import ProtocolVersion
 
 from kmip.core.messages import messages
-
-from kmip.core.messages.payloads import activate
-from kmip.core.messages.payloads import create
-from kmip.core.messages.payloads import create_key_pair
-from kmip.core.messages.payloads import decrypt
-from kmip.core.messages.payloads import destroy
-from kmip.core.messages.payloads import discover_versions
-from kmip.core.messages.payloads import encrypt
-from kmip.core.messages.payloads import get
-from kmip.core.messages.payloads import get_attributes
-from kmip.core.messages.payloads import get_attribute_list
-from kmip.core.messages.payloads import locate
-from kmip.core.messages.payloads import query
-from kmip.core.messages.payloads import rekey_key_pair
-from kmip.core.messages.payloads import register
-from kmip.core.messages.payloads import revoke
-from kmip.core.messages.payloads import mac
+from kmip.core.messages import payloads
 
 from kmip.services.server.kmip_protocol import KMIPProtocol
 
@@ -478,7 +462,7 @@ class KMIPProxy(KMIP):
         """
         operation = Operation(OperationEnum.ENCRYPT)
 
-        request_payload = encrypt.EncryptRequestPayload(
+        request_payload = payloads.EncryptRequestPayload(
             unique_identifier=unique_identifier,
             data=data,
             cryptographic_parameters=cryptographic_parameters,
@@ -548,7 +532,7 @@ class KMIPProxy(KMIP):
         """
         operation = Operation(OperationEnum.DECRYPT)
 
-        request_payload = decrypt.DecryptRequestPayload(
+        request_payload = payloads.DecryptRequestPayload(
             unique_identifier=unique_identifier,
             data=data,
             cryptographic_parameters=cryptographic_parameters,
@@ -593,7 +577,7 @@ class KMIPProxy(KMIP):
         if object_type is None:
             raise ValueError('object_type cannot be None')
 
-        req_pl = create.CreateRequestPayload(
+        req_pl = payloads.CreateRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute)
         batch_item = messages.RequestBatchItem(operation=operation,
@@ -629,7 +613,7 @@ class KMIPProxy(KMIP):
                                           private_key_template_attribute=None,
                                           public_key_template_attribute=None):
         operation = Operation(OperationEnum.CREATE_KEY_PAIR)
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template_attribute=common_template_attribute,
             private_key_template_attribute=private_key_template_attribute,
             public_key_template_attribute=public_key_template_attribute)
@@ -643,7 +627,7 @@ class KMIPProxy(KMIP):
                                          private_key_template_attribute=None,
                                          public_key_template_attribute=None):
         operation = Operation(OperationEnum.REKEY_KEY_PAIR)
-        payload = rekey_key_pair.RekeyKeyPairRequestPayload(
+        payload = payloads.RekeyKeyPairRequestPayload(
             private_key_uuid, offset,
             common_template_attribute=common_template_attribute,
             private_key_template_attribute=private_key_template_attribute,
@@ -654,7 +638,7 @@ class KMIPProxy(KMIP):
 
     def _build_query_batch_item(self, query_functions=None):
         operation = Operation(OperationEnum.QUERY)
-        payload = query.QueryRequestPayload(query_functions)
+        payload = payloads.QueryRequestPayload(query_functions)
         batch_item = messages.RequestBatchItem(
             operation=operation, request_payload=payload)
         return batch_item
@@ -665,7 +649,7 @@ class KMIPProxy(KMIP):
             attribute_names=None
     ):
         operation = Operation(OperationEnum.GET_ATTRIBUTES)
-        payload = get_attributes.GetAttributesRequestPayload(
+        payload = payloads.GetAttributesRequestPayload(
             uuid,
             attribute_names
         )
@@ -677,7 +661,7 @@ class KMIPProxy(KMIP):
 
     def _build_get_attribute_list_batch_item(self, uid=None):
         operation = Operation(OperationEnum.GET_ATTRIBUTE_LIST)
-        payload = get_attribute_list.GetAttributeListRequestPayload(uid)
+        payload = payloads.GetAttributeListRequestPayload(uid)
         batch_item = messages.RequestBatchItem(
             operation=operation, request_payload=payload)
         return batch_item
@@ -685,7 +669,7 @@ class KMIPProxy(KMIP):
     def _build_discover_versions_batch_item(self, protocol_versions=None):
         operation = Operation(OperationEnum.DISCOVER_VERSIONS)
 
-        payload = discover_versions.DiscoverVersionsRequestPayload(
+        payload = payloads.DiscoverVersionsRequestPayload(
             protocol_versions)
 
         batch_item = messages.RequestBatchItem(
@@ -846,7 +830,7 @@ class KMIPProxy(KMIP):
         if key_wrapping_specification is not None:
             kws = objects.KeyWrappingSpecification(key_wrapping_specification)
 
-        req_pl = get.GetRequestPayload(
+        req_pl = payloads.GetRequestPayload(
             unique_identifier=unique_identifier,
             key_format_type=key_format_type,
             key_compression_type=key_compression_type,
@@ -888,7 +872,7 @@ class KMIPProxy(KMIP):
         if unique_identifier is not None:
             uuid = attr.UniqueIdentifier(unique_identifier)
 
-        payload = activate.ActivateRequestPayload(unique_identifier=uuid)
+        payload = payloads.ActivateRequestPayload(unique_identifier=uuid)
 
         batch_item = messages.RequestBatchItem(operation=operation,
                                                request_payload=payload)
@@ -921,7 +905,7 @@ class KMIPProxy(KMIP):
         if unique_identifier is not None:
             uuid = attr.UniqueIdentifier(unique_identifier)
 
-        payload = destroy.DestroyRequestPayload(unique_identifier=uuid)
+        payload = payloads.DestroyRequestPayload(unique_identifier=uuid)
 
         batch_item = messages.RequestBatchItem(operation=operation,
                                                request_payload=payload)
@@ -956,7 +940,7 @@ class KMIPProxy(KMIP):
         if unique_identifier is not None:
             uuid = attr.UniqueIdentifier(unique_identifier)
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=uuid,
             revocation_reason=reason,
             compromise_occurrence_date=compromise_occurrence_date)
@@ -993,7 +977,7 @@ class KMIPProxy(KMIP):
         if object_type is None:
             raise ValueError('object_type cannot be None')
 
-        req_pl = register.RegisterRequestPayload(
+        req_pl = payloads.RegisterRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute,
             secret=secret)
@@ -1033,18 +1017,18 @@ class KMIPProxy(KMIP):
         objgrp = None
 
         if maximum_items is not None:
-            mxi = locate.LocateRequestPayload.MaximumItems(maximum_items)
+            mxi = payloads.LocateRequestPayload.MaximumItems(maximum_items)
         if storage_status_mask is not None:
             m = storage_status_mask
-            ssmask = locate.LocateRequestPayload.StorageStatusMask(m)
+            ssmask = payloads.LocateRequestPayload.StorageStatusMask(m)
         if object_group_member is not None:
             o = object_group_member
-            objgrp = locate.LocateRequestPayload.ObjectGroupMember(o)
+            objgrp = payloads.LocateRequestPayload.ObjectGroupMember(o)
 
-        payload = locate.LocateRequestPayload(maximum_items=mxi,
-                                              storage_status_mask=ssmask,
-                                              object_group_member=objgrp,
-                                              attributes=attributes)
+        payload = payloads.LocateRequestPayload(maximum_items=mxi,
+                                                storage_status_mask=ssmask,
+                                                object_group_member=objgrp,
+                                                attributes=attributes)
 
         batch_item = messages.RequestBatchItem(operation=operation,
                                                request_payload=payload)
@@ -1077,7 +1061,7 @@ class KMIPProxy(KMIP):
              credential=None):
         operation = Operation(OperationEnum.MAC)
 
-        req_pl = mac.MACRequestPayload(
+        req_pl = payloads.MACRequestPayload(
             unique_identifier=attr.UniqueIdentifier(unique_identifier),
             cryptographic_parameters=cryptographic_parameters,
             data=objects.Data(data))

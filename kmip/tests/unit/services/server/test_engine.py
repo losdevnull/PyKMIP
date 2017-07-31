@@ -38,23 +38,7 @@ from kmip.core.factories import attributes as factory
 
 from kmip.core.messages import contents
 from kmip.core.messages import messages
-
-from kmip.core.messages.payloads import activate
-from kmip.core.messages.payloads import revoke
-from kmip.core.messages.payloads import create
-from kmip.core.messages.payloads import create_key_pair
-from kmip.core.messages.payloads import decrypt
-from kmip.core.messages.payloads import derive_key
-from kmip.core.messages.payloads import destroy
-from kmip.core.messages.payloads import discover_versions
-from kmip.core.messages.payloads import encrypt
-from kmip.core.messages.payloads import get
-from kmip.core.messages.payloads import get_attribute_list
-from kmip.core.messages.payloads import get_attributes
-from kmip.core.messages.payloads import query
-from kmip.core.messages.payloads import register
-from kmip.core.messages.payloads import mac
-from kmip.core.messages.payloads import locate
+from kmip.core.messages import payloads
 
 from kmip.pie import objects as pie_objects
 from kmip.pie import sqltypes
@@ -95,7 +79,7 @@ class TestKmipEngine(testtools.TestCase):
         super(TestKmipEngine, self).tearDown()
 
     def _build_request(self):
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         batch = [
             messages.RequestBatchItem(
                 operation=contents.Operation(
@@ -341,7 +325,7 @@ class TestKmipEngine(testtools.TestCase):
         e = engine.KmipEngine()
         e._logger = mock.MagicMock()
 
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         e._process_discover_versions(payload)
 
     def test_version_operation_mismatch(self):
@@ -384,7 +368,7 @@ class TestKmipEngine(testtools.TestCase):
             time_stamp=contents.TimeStamp(int(time.time())),
             batch_count=contents.BatchCount(1)
         )
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         batch = list([
             messages.RequestBatchItem(
                 operation=contents.Operation(
@@ -442,7 +426,7 @@ class TestKmipEngine(testtools.TestCase):
         self.assertIsNone(batch_item.async_correlation_value)
         self.assertIsInstance(
             batch_item.response_payload,
-            discover_versions.DiscoverVersionsResponsePayload
+            payloads.DiscoverVersionsResponsePayload
         )
         self.assertIsNone(batch_item.message_extension)
 
@@ -616,7 +600,7 @@ class TestKmipEngine(testtools.TestCase):
             time_stamp=contents.TimeStamp(int(time.time())),
             batch_count=contents.BatchCount(1)
         )
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         batch = list([
             messages.RequestBatchItem(
                 operation=contents.Operation(
@@ -689,7 +673,7 @@ class TestKmipEngine(testtools.TestCase):
         e = engine.KmipEngine()
         e._logger = mock.MagicMock()
 
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         batch = list([
             messages.RequestBatchItem(
                 operation=contents.Operation(
@@ -716,7 +700,7 @@ class TestKmipEngine(testtools.TestCase):
         e = engine.KmipEngine()
         e._logger = mock.MagicMock()
 
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
         batch = list([
             messages.RequestBatchItem(
                 operation=contents.Operation(
@@ -2405,7 +2389,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type,
             template_attribute
         )
@@ -2467,7 +2451,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
 
         object_type = attributes.ObjectType(enums.ObjectType.PUBLIC_KEY)
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type
         )
 
@@ -2522,7 +2506,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type,
             template_attribute
         )
@@ -2568,7 +2552,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type,
             template_attribute
         )
@@ -2611,7 +2595,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type,
             template_attribute
         )
@@ -2684,7 +2668,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -2816,7 +2800,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -2883,7 +2867,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -2950,7 +2934,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3017,7 +3001,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3082,7 +3066,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3147,7 +3131,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3231,7 +3215,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3301,7 +3285,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -3384,7 +3368,7 @@ class TestKmipEngine(testtools.TestCase):
             )
         )
 
-        payload = register.RegisterRequestPayload(
+        payload = payloads.RegisterRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute,
             secret=secret
@@ -3447,7 +3431,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
 
         object_type = attributes.ObjectType(enums.ObjectType.SPLIT_KEY)
-        payload = register.RegisterRequestPayload(object_type=object_type)
+        payload = payloads.RegisterRequestPayload(object_type=object_type)
 
         args = (payload, )
         regex = "The SplitKey object type is not supported."
@@ -3471,7 +3455,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
 
         object_type = attributes.ObjectType(enums.ObjectType.SYMMETRIC_KEY)
-        payload = register.RegisterRequestPayload(object_type=object_type)
+        payload = payloads.RegisterRequestPayload(object_type=object_type)
 
         args = (payload, )
         regex = "Cannot register a secret in absentia."
@@ -3511,7 +3495,7 @@ class TestKmipEngine(testtools.TestCase):
         attribute_factory = factory.AttributeFactory()
 
         # Derive a SymmetricKey object.
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.HMAC,
@@ -3596,7 +3580,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         # Derive a SecretData object.
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SECRET_DATA,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.ENCRYPT,
@@ -3668,7 +3652,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
         e._cryptography_engine.logger = mock.MagicMock()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.CERTIFICATE
         )
 
@@ -3701,7 +3685,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session.commit()
         e._data_session = e._data_store_session_factory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SECRET_DATA,
             unique_identifiers=[str(invalid_key.unique_identifier)]
         )
@@ -3741,7 +3725,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session.commit()
         e._data_session = e._data_store_session_factory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SECRET_DATA,
             unique_identifiers=[str(base_key.unique_identifier)]
         )
@@ -3795,7 +3779,7 @@ class TestKmipEngine(testtools.TestCase):
 
         attribute_factory = factory.AttributeFactory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[
                 str(base_key.unique_identifier),
@@ -3903,7 +3887,7 @@ class TestKmipEngine(testtools.TestCase):
 
         attribute_factory = factory.AttributeFactory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.HMAC,
@@ -3960,7 +3944,7 @@ class TestKmipEngine(testtools.TestCase):
 
         attribute_factory = factory.AttributeFactory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.HMAC,
@@ -4021,7 +4005,7 @@ class TestKmipEngine(testtools.TestCase):
 
         attribute_factory = factory.AttributeFactory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.HMAC,
@@ -4081,7 +4065,7 @@ class TestKmipEngine(testtools.TestCase):
 
         attribute_factory = factory.AttributeFactory()
 
-        payload = derive_key.DeriveKeyRequestPayload(
+        payload = payloads.DeriveKeyRequestPayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,
             unique_identifiers=[str(base_key.unique_identifier)],
             derivation_method=enums.DerivationMethod.HMAC,
@@ -4130,7 +4114,7 @@ class TestKmipEngine(testtools.TestCase):
         obj_b = pie_objects.OpaqueObject(b'', enums.OpaqueDataType.NONE)
 
         # locate should return nothing at beginning
-        payload = locate.LocateRequestPayload()
+        payload = payloads.LocateRequestPayload()
         response_payload = e._process_locate(payload)
         e._data_session.commit()
         e._data_session = e._data_store_session_factory()
@@ -4150,7 +4134,7 @@ class TestKmipEngine(testtools.TestCase):
 
         id_a = str(obj_a.unique_identifier)
 
-        payload = locate.LocateRequestPayload()
+        payload = payloads.LocateRequestPayload()
         e._logger.reset_mock()
         response_payload = e._process_locate(payload)
         e._data_session.commit()
@@ -4176,7 +4160,7 @@ class TestKmipEngine(testtools.TestCase):
 
         id_b = str(obj_b.unique_identifier)
 
-        payload = locate.LocateRequestPayload()
+        payload = payloads.LocateRequestPayload()
         e._logger.reset_mock()
         response_payload = e._process_locate(payload)
         e._data_session.commit()
@@ -4241,7 +4225,7 @@ class TestKmipEngine(testtools.TestCase):
                 ),
         ]
 
-        payload = locate.LocateRequestPayload(attributes=attrs)
+        payload = payloads.LocateRequestPayload(attributes=attrs)
         e._logger.reset_mock()
         response_payload = e._process_locate(payload)
         e._data_session.commit()
@@ -4275,7 +4259,7 @@ class TestKmipEngine(testtools.TestCase):
                 ),
         ]
 
-        payload = locate.LocateRequestPayload(attributes=attrs)
+        payload = payloads.LocateRequestPayload(attributes=attrs)
         e._logger.reset_mock()
         response_payload = e._process_locate(payload)
         e._data_session.commit()
@@ -4316,7 +4300,7 @@ class TestKmipEngine(testtools.TestCase):
         id_b = str(obj_b.unique_identifier)
 
         # Test by specifying the ID of the object to get.
-        payload = get.GetRequestPayload(unique_identifier=id_a)
+        payload = payloads.GetRequestPayload(unique_identifier=id_a)
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -4346,7 +4330,7 @@ class TestKmipEngine(testtools.TestCase):
         e._id_placeholder = str(id_b)
 
         # Test by using the ID placeholder to specify the object to get.
-        payload = get.GetRequestPayload()
+        payload = payloads.GetRequestPayload()
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -4385,7 +4369,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test that specifying the key compression type generates an error.
         k = enums.KeyCompressionType.EC_PUBLIC_KEY_TYPE_UNCOMPRESSED
-        payload = get.GetRequestPayload(key_compression_type=k)
+        payload = payloads.GetRequestPayload(key_compression_type=k)
 
         args = (payload, )
         regex = "Key compression is not supported."
@@ -4423,7 +4407,7 @@ class TestKmipEngine(testtools.TestCase):
         id_a = str(obj_a.unique_identifier)
 
         # Test that a key can be retrieved with the right key format.
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=id_a,
             key_format_type=enums.KeyFormatType.RAW
         )
@@ -4458,7 +4442,7 @@ class TestKmipEngine(testtools.TestCase):
         # required.
         e._logger.reset_mock()
 
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=id_a,
             key_format_type=enums.KeyFormatType.OPAQUE
         )
@@ -4489,7 +4473,7 @@ class TestKmipEngine(testtools.TestCase):
 
         id_b = str(obj_b.unique_identifier)
 
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=id_b,
             key_format_type=enums.KeyFormatType.RAW
         )
@@ -4526,7 +4510,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         id_a = str(obj_a.unique_identifier)
-        payload = get.GetRequestPayload(unique_identifier=id_a)
+        payload = payloads.GetRequestPayload(unique_identifier=id_a)
 
         # Test by specifying the ID of the object to get.
         args = [payload]
@@ -4581,7 +4565,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -4693,7 +4677,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.MAC_SIGN,
@@ -4759,7 +4743,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -4807,7 +4791,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         unwrapped_key_uuid = str(unwrapped_key.unique_identifier)
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -4855,7 +4839,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -4918,7 +4902,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -4982,7 +4966,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -5047,7 +5031,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -5112,7 +5096,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -5177,7 +5161,7 @@ class TestKmipEngine(testtools.TestCase):
         cryptographic_parameters = attributes.CryptographicParameters(
             block_cipher_mode=enums.BlockCipherMode.NIST_KEY_WRAP
         )
-        payload = get.GetRequestPayload(
+        payload = payloads.GetRequestPayload(
             unique_identifier=unwrapped_key_uuid,
             key_wrapping_specification=objects.KeyWrappingSpecification(
                 wrapping_method=enums.WrappingMethod.ENCRYPT,
@@ -5219,7 +5203,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session.commit()
         e._data_session = e._data_store_session_factory()
 
-        payload = get_attributes.GetAttributesRequestPayload(
+        payload = payloads.GetAttributesRequestPayload(
             unique_identifier='1',
             attribute_names=['Object Type', 'Cryptographic Algorithm']
         )
@@ -5276,7 +5260,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
         e._id_placeholder = '1'
 
-        payload = get_attributes.GetAttributesRequestPayload()
+        payload = payloads.GetAttributesRequestPayload()
 
         response_payload = e._process_get_attributes(payload)
         e._data_session.commit()
@@ -5357,7 +5341,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         id_a = str(obj_a.unique_identifier)
-        payload = get_attributes.GetAttributesRequestPayload(
+        payload = payloads.GetAttributesRequestPayload(
             unique_identifier=id_a
         )
 
@@ -5391,7 +5375,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session.commit()
         e._data_session = e._data_store_session_factory()
 
-        payload = get_attribute_list.GetAttributeListRequestPayload(
+        payload = payloads.GetAttributeListRequestPayload(
             unique_identifier='1'
         )
 
@@ -5469,7 +5453,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
         e._id_placeholder = '1'
 
-        payload = get_attribute_list.GetAttributeListRequestPayload()
+        payload = payloads.GetAttributeListRequestPayload()
 
         response_payload = e._process_get_attribute_list(payload)
         e._data_session.commit()
@@ -5543,7 +5527,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         id_a = str(obj_a.unique_identifier)
-        payload = get_attribute_list.GetAttributeListRequestPayload(
+        payload = payloads.GetAttributeListRequestPayload(
             unique_identifier=id_a
         )
 
@@ -5581,7 +5565,7 @@ class TestKmipEngine(testtools.TestCase):
         object_id = str(managed_object.unique_identifier)
 
         # Test by specifying the ID of the object to activate.
-        payload = activate.ActivateRequestPayload(
+        payload = payloads.ActivateRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id)
         )
 
@@ -5616,7 +5600,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test that the ID placeholder can also be used to specify activation.
         e._id_placeholder = str(object_id)
-        payload = activate.ActivateRequestPayload()
+        payload = payloads.ActivateRequestPayload()
         args = (payload,)
         regex = "The object state is not pre-active and cannot be activated."
         self.assertRaisesRegexp(
@@ -5648,7 +5632,7 @@ class TestKmipEngine(testtools.TestCase):
         object_id = str(managed_object.unique_identifier)
 
         # Test by specifying the ID of the object to activate.
-        payload = activate.ActivateRequestPayload(
+        payload = payloads.ActivateRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id)
         )
 
@@ -5690,7 +5674,7 @@ class TestKmipEngine(testtools.TestCase):
         object_id = str(managed_object.unique_identifier)
 
         # Test by specifying the ID of the object to activate.
-        payload = activate.ActivateRequestPayload(
+        payload = payloads.ActivateRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id)
         )
 
@@ -5722,7 +5706,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         id_a = str(obj_a.unique_identifier)
-        payload = activate.ActivateRequestPayload(
+        payload = payloads.ActivateRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id_a)
         )
 
@@ -5766,7 +5750,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test that reason UNSPECIFIED will put object into state
         # DEACTIVATED
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=reason_unspecified,
             compromise_occurrence_date=date)
@@ -5793,7 +5777,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test that reason KEY_COMPROMISE will put object not in DESTROYED
         # state into state COMPROMISED
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=reason_compromise,
             compromise_occurrence_date=date)
@@ -5827,7 +5811,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
         e._logger.reset_mock()
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=reason_compromise,
             compromise_occurrence_date=date)
@@ -5858,7 +5842,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         e._id_placeholder = str(object_id)
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             revocation_reason=reason_unspecified,
             compromise_occurrence_date=date)
 
@@ -5909,7 +5893,7 @@ class TestKmipEngine(testtools.TestCase):
         date = primitives.DateTime(
             tag=enums.Tags.COMPROMISE_OCCURRENCE_DATE, value=6)
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=None,
             compromise_occurrence_date=date)
@@ -5953,7 +5937,7 @@ class TestKmipEngine(testtools.TestCase):
         date = primitives.DateTime(
             tag=enums.Tags.COMPROMISE_OCCURRENCE_DATE, value=6)
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=reason_unspecified,
             compromise_occurrence_date=date)
@@ -5994,7 +5978,7 @@ class TestKmipEngine(testtools.TestCase):
         date = primitives.DateTime(
             tag=enums.Tags.COMPROMISE_OCCURRENCE_DATE, value=6)
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(object_id),
             revocation_reason=reason_unspecified,
             compromise_occurrence_date=date)
@@ -6038,7 +6022,7 @@ class TestKmipEngine(testtools.TestCase):
         date = primitives.DateTime(
             tag=enums.Tags.COMPROMISE_OCCURRENCE_DATE, value=6)
 
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id_a),
             revocation_reason=reason_unspecified,
             compromise_occurrence_date=date)
@@ -6080,7 +6064,7 @@ class TestKmipEngine(testtools.TestCase):
         id_c = str(obj_c.unique_identifier)
 
         # Test by specifying the ID of the object to destroy.
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id_a)
         )
 
@@ -6109,7 +6093,7 @@ class TestKmipEngine(testtools.TestCase):
         e._id_placeholder = str(id_b)
 
         # Test by using the ID placeholder to specify the object to destroy.
-        payload = destroy.DestroyRequestPayload()
+        payload = payloads.DestroyRequestPayload()
 
         response_payload = e._process_destroy(payload)
         e._data_session.commit()
@@ -6135,7 +6119,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Test that compromised object can be destroyed properly
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id_c)
         )
         response_payload = e._process_destroy(payload)
@@ -6178,7 +6162,7 @@ class TestKmipEngine(testtools.TestCase):
         e._data_session = e._data_store_session_factory()
 
         id_a = str(obj_a.unique_identifier)
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id_a)
         )
 
@@ -6216,7 +6200,7 @@ class TestKmipEngine(testtools.TestCase):
         id = str(obj.unique_identifier)
 
         # Test by specifying the ID of the object to destroy.
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(id)
         )
 
@@ -6239,7 +6223,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
         e._protocol_version = contents.ProtocolVersion.create(1, 0)
 
-        payload = query.QueryRequestPayload([
+        payload = payloads.QueryRequestPayload([
             misc.QueryFunction(enums.QueryFunction.QUERY_OPERATIONS),
             misc.QueryFunction(enums.QueryFunction.QUERY_OBJECTS),
             misc.QueryFunction(
@@ -6255,7 +6239,7 @@ class TestKmipEngine(testtools.TestCase):
         result = e._process_query(payload)
 
         e._logger.info.assert_called_once_with("Processing operation: Query")
-        self.assertIsInstance(result, query.QueryResponsePayload)
+        self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsNotNone(result.operations)
         self.assertEqual(11, len(result.operations))
         self.assertEqual(
@@ -6321,7 +6305,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
         e._protocol_version = contents.ProtocolVersion.create(1, 1)
 
-        payload = query.QueryRequestPayload([
+        payload = payloads.QueryRequestPayload([
             misc.QueryFunction(enums.QueryFunction.QUERY_OPERATIONS),
             misc.QueryFunction(enums.QueryFunction.QUERY_OBJECTS),
             misc.QueryFunction(
@@ -6337,7 +6321,7 @@ class TestKmipEngine(testtools.TestCase):
         result = e._process_query(payload)
 
         e._logger.info.assert_called_once_with("Processing operation: Query")
-        self.assertIsInstance(result, query.QueryResponsePayload)
+        self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsNotNone(result.operations)
         self.assertEqual(12, len(result.operations))
         self.assertEqual(
@@ -6407,7 +6391,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger = mock.MagicMock()
         e._protocol_version = contents.ProtocolVersion.create(1, 2)
 
-        payload = query.QueryRequestPayload([
+        payload = payloads.QueryRequestPayload([
             misc.QueryFunction(enums.QueryFunction.QUERY_OPERATIONS),
             misc.QueryFunction(enums.QueryFunction.QUERY_OBJECTS),
             misc.QueryFunction(
@@ -6423,7 +6407,7 @@ class TestKmipEngine(testtools.TestCase):
         result = e._process_query(payload)
 
         e._logger.info.assert_called_once_with("Processing operation: Query")
-        self.assertIsInstance(result, query.QueryResponsePayload)
+        self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsNotNone(result.operations)
         self.assertEqual(15, len(result.operations))
         self.assertEqual(
@@ -6505,7 +6489,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test default request.
         e._logger = mock.MagicMock()
-        payload = discover_versions.DiscoverVersionsRequestPayload()
+        payload = payloads.DiscoverVersionsRequestPayload()
 
         result = e._process_discover_versions(payload)
 
@@ -6514,7 +6498,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         self.assertIsInstance(
             result,
-            discover_versions.DiscoverVersionsResponsePayload
+            payloads.DiscoverVersionsResponsePayload
         )
         self.assertIsNotNone(result.protocol_versions)
         self.assertEqual(3, len(result.protocol_versions))
@@ -6533,7 +6517,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test detailed request.
         e._logger = mock.MagicMock()
-        payload = discover_versions.DiscoverVersionsRequestPayload([
+        payload = payloads.DiscoverVersionsRequestPayload([
             contents.ProtocolVersion.create(1, 0)
         ])
 
@@ -6551,7 +6535,7 @@ class TestKmipEngine(testtools.TestCase):
 
         # Test disjoint request.
         e._logger = mock.MagicMock()
-        payload = discover_versions.DiscoverVersionsRequestPayload([
+        payload = payloads.DiscoverVersionsRequestPayload([
             contents.ProtocolVersion.create(0, 1)
         ])
 
@@ -6605,7 +6589,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6671,7 +6655,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = None
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6729,7 +6713,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6779,7 +6763,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6835,7 +6819,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6892,7 +6876,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -6951,7 +6935,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -7016,7 +7000,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -7066,7 +7050,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -7122,7 +7106,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -7179,7 +7163,7 @@ class TestKmipEngine(testtools.TestCase):
         )
         iv_counter_nonce = b'\xFE\xDC\xBA\x98\x76\x54\x32\x10'
 
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier,
             cryptographic_parameters,
             data,
@@ -7227,7 +7211,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Verify when cryptographic_parameters is specified in request
-        payload = mac.MACRequestPayload(
+        payload = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid),
             cryptographic_parameters=cryptographic_parameters,
             data=objects.Data(data)
@@ -7247,7 +7231,7 @@ class TestKmipEngine(testtools.TestCase):
         self.assertIsInstance(response_payload.mac_data, objects.MACData)
 
         # Verify when cryptographic_parameters is not specified in request
-        payload = mac.MACRequestPayload(
+        payload = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid),
             cryptographic_parameters=None,
             data=objects.Data(data)
@@ -7294,7 +7278,7 @@ class TestKmipEngine(testtools.TestCase):
             cryptographic_algorithm=algorithm
         )
 
-        payload_no_key = mac.MACRequestPayload(
+        payload_no_key = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid_no_key),
             cryptographic_parameters=cryptographic_parameters,
             data=objects.Data(data)
@@ -7309,7 +7293,7 @@ class TestKmipEngine(testtools.TestCase):
             *args
         )
 
-        payload_no_algorithm = mac.MACRequestPayload(
+        payload_no_algorithm = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid_no_algorithm),
             cryptographic_parameters=None,
             data=objects.Data(data)
@@ -7324,7 +7308,7 @@ class TestKmipEngine(testtools.TestCase):
             *args
         )
 
-        payload_no_data = mac.MACRequestPayload(
+        payload_no_data = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid_no_algorithm),
             cryptographic_parameters=cryptographic_parameters,
             data=None
@@ -7372,7 +7356,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Verify when cryptographic_parameters is specified in request
-        payload = mac.MACRequestPayload(
+        payload = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid),
             cryptographic_parameters=cryptographic_parameters,
             data=objects.Data(data)
@@ -7420,7 +7404,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Verify when cryptographic_parameters is specified in request
-        payload = mac.MACRequestPayload(
+        payload = payloads.MACRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid),
             cryptographic_parameters=cryptographic_parameters,
             data=objects.Data(data)
@@ -7479,7 +7463,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Create the symmetric key with the corresponding attributes
-        payload = create.CreateRequestPayload(
+        payload = payloads.CreateRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute
         )
@@ -7498,7 +7482,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Retrieve the created key using Get and verify all fields set
-        payload = get.GetRequestPayload(unique_identifier=uid)
+        payload = payloads.GetRequestPayload(unique_identifier=uid)
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -7535,7 +7519,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Destroy the symmetric key and verify it cannot be accessed again
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uid)
         )
 
@@ -7613,7 +7597,7 @@ class TestKmipEngine(testtools.TestCase):
                 )
             ]
         )
-        payload = create_key_pair.CreateKeyPairRequestPayload(
+        payload = payloads.CreateKeyPairRequestPayload(
             common_template,
             private_template,
             public_template
@@ -7635,7 +7619,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Retrieve the created public key using Get and verify all fields set
-        payload = get.GetRequestPayload(unique_identifier=public_id)
+        payload = payloads.GetRequestPayload(unique_identifier=public_id)
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -7668,7 +7652,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Retrieve the created private key using Get and verify all fields set
-        payload = get.GetRequestPayload(unique_identifier=private_id)
+        payload = payloads.GetRequestPayload(unique_identifier=private_id)
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -7703,7 +7687,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Destroy the public key and verify it cannot be accessed again
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(public_id)
         )
 
@@ -7738,7 +7722,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Destroy the private key and verify it cannot be accessed again
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(private_id)
         )
 
@@ -7830,7 +7814,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Register the symmetric key with the corresponding attributes
-        payload = register.RegisterRequestPayload(
+        payload = payloads.RegisterRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute,
             secret=secret
@@ -7850,7 +7834,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Retrieve the registered key using Get and verify all fields set
-        payload = get.GetRequestPayload(unique_identifier=uid)
+        payload = payloads.GetRequestPayload(unique_identifier=uid)
 
         response_payload = e._process_get(payload)
         e._data_session.commit()
@@ -7885,7 +7869,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Destroy the symmetric key and verify it cannot be accessed again
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uid)
         )
 
@@ -7971,7 +7955,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Register the symmetric key with the corresponding attributes
-        payload = register.RegisterRequestPayload(
+        payload = payloads.RegisterRequestPayload(
             object_type=object_type,
             template_attribute=template_attribute,
             secret=secret
@@ -7991,7 +7975,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.reset_mock()
 
         # Activate the symmetric key
-        payload = activate.ActivateRequestPayload(
+        payload = payloads.ActivateRequestPayload(
             attributes.UniqueIdentifier(uuid)
         )
 
@@ -8007,7 +7991,7 @@ class TestKmipEngine(testtools.TestCase):
         self.assertEqual(uuid, activated_uuid)
 
         # Encrypt some data using the symmetric key
-        payload = encrypt.EncryptRequestPayload(
+        payload = payloads.EncryptRequestPayload(
             unique_identifier=uuid,
             cryptographic_parameters=attributes.CryptographicParameters(
                 block_cipher_mode=enums.BlockCipherMode.CBC,
@@ -8046,7 +8030,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Decrypt the encrypted data using the symmetric key
-        payload = decrypt.DecryptRequestPayload(
+        payload = payloads.DecryptRequestPayload(
             unique_identifier=uuid,
             cryptographic_parameters=attributes.CryptographicParameters(
                 block_cipher_mode=enums.BlockCipherMode.CBC,
@@ -8080,7 +8064,7 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         # Revoke the activated symmetric key to prepare it for deletion
-        payload = revoke.RevokeRequestPayload(
+        payload = payloads.RevokeRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid)
         )
 
@@ -8095,7 +8079,7 @@ class TestKmipEngine(testtools.TestCase):
         self.assertEqual(uuid, response_payload.unique_identifier.value)
 
         # Destroy the symmetric key and verify it cannot be accessed again
-        payload = destroy.DestroyRequestPayload(
+        payload = payloads.DestroyRequestPayload(
             unique_identifier=attributes.UniqueIdentifier(uuid)
         )
 
